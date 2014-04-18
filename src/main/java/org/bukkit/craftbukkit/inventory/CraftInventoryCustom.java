@@ -62,14 +62,14 @@ public class CraftInventoryCustom extends CraftInventory {
         }
 
         public ItemStack splitStack(int i, int j) {
-            return splitMerged(i, j, true);
+            return splitHelper(i, j, true);
         }
 
         public ItemStack splitWithoutUpdate(int i) {
-            return splitMerged(i, 1, false);
+            return splitHelper(i, 1, false);
         }
 
-        public ItemStack splitMerged(int i, int j, boolean update) {
+        public ItemStack splitHelper(int i, int j, boolean update) {
             ItemStack stack = this.getItem(i);
             ItemStack result;
             if (stack == null) return null;
