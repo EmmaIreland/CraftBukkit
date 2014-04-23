@@ -19,12 +19,12 @@ import net.minecraft.server.TileEntityDropper;
 import net.minecraft.server.TileEntityFurnace;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
 
 public class CraftInventory implements Inventory {
     protected final IInventory inventory;
@@ -424,37 +424,66 @@ public class CraftInventory implements Inventory {
         return inventory.getInventoryName();
     }
 
+    
+    // Thanks to Droppers extending Dispensers, order is important for getTypeHelper.
+    public InventoryType getTypeHelper(InventoryCrafting inventory) {
+        return inventory.getSize() >= 9 ? InventoryType.WORKBENCH : InventoryType.CRAFTING;
+    }
+
+    public InventoryType getTypeHelper(PlayerInventory inventory) {
+        return InventoryType.PLAYER;
+    }
+
+    public InventoryType getTypeHelper(TileEntityDropper inventory) {
+        return InventoryType.DROPPER;
+    }
+
+    public InventoryType getTypeHelper(TileEntityDispenser inventory) {
+        return InventoryType.DISPENSER;
+    }
+
+    public InventoryType getTypeHelper(TileEntityFurnace inventory) {
+        return InventoryType.FURNACE;
+    }
+
+    public InventoryType getTypeHelper(ContainerEnchantTableInventory inventory) {
+        return InventoryType.ENCHANTING;
+    }
+
+    public InventoryType getTypeHelper(TileEntityBrewingStand inventory) {
+        return InventoryType.BREWING;
+    }
+
+    public InventoryType getTypeHelper(CraftInventoryCustom.MinecraftInventory inventory) {
+        return inventory.getType();
+    }
+
+    public InventoryType getTypeHelper(InventoryEnderChest inventory) {
+        return InventoryType.ENDER_CHEST;
+    }
+
+    public InventoryType getTypeHelper(InventoryMerchant inventory) {
+        return InventoryType.MERCHANT;
+    }
+
+    public InventoryType getTypeHelper(TileEntityBeacon inventory) {
+        return InventoryType.BEACON;
+    }
+
+    public InventoryType getTypeHelper(ContainerAnvilInventory inventory) {
+        return InventoryType.ANVIL;
+    }
+
+    public InventoryType getTypeHelper(IHopper inventory) {
+        return InventoryType.HOPPER;
+    }
+
+    public InventoryType getTypeHelper(IInventory inventory) {
+        return InventoryType.CHEST;
+    }
+
     public InventoryType getType() {
-        // Thanks to Droppers extending Dispensers, order is important.
-        if (inventory instanceof InventoryCrafting) {
-            return inventory.getSize() >= 9 ? InventoryType.WORKBENCH : InventoryType.CRAFTING;
-        } else if (inventory instanceof PlayerInventory) {
-            return InventoryType.PLAYER;
-        } else if (inventory instanceof TileEntityDropper) {
-            return InventoryType.DROPPER;
-        } else if (inventory instanceof TileEntityDispenser) {
-            return InventoryType.DISPENSER;
-        } else if (inventory instanceof TileEntityFurnace) {
-            return InventoryType.FURNACE;
-        } else if (inventory instanceof ContainerEnchantTableInventory) {
-            return InventoryType.ENCHANTING;
-        } else if (inventory instanceof TileEntityBrewingStand) {
-            return InventoryType.BREWING;
-        } else if (inventory instanceof CraftInventoryCustom.MinecraftInventory) {
-            return ((CraftInventoryCustom.MinecraftInventory) inventory).getType();
-        } else if (inventory instanceof InventoryEnderChest) {
-            return InventoryType.ENDER_CHEST;
-        } else if (inventory instanceof InventoryMerchant) {
-            return InventoryType.MERCHANT;
-        } else if (inventory instanceof TileEntityBeacon) {
-            return InventoryType.BEACON;
-        } else if (inventory instanceof ContainerAnvilInventory) {
-            return InventoryType.ANVIL;
-        } else if (inventory instanceof IHopper) {
-            return InventoryType.HOPPER;
-        } else {
-            return InventoryType.CHEST;
-        }
+        return getTypeHelper(inventory);
     }
 
     public InventoryHolder getHolder() {
@@ -469,12 +498,10 @@ public class CraftInventory implements Inventory {
         inventory.setMaxStackSize(size);
     }
 
-    @Override
     public int hashCode() {
         return inventory.hashCode();
     }
 
-    @Override
     public boolean equals(final Object obj) {
         return obj instanceof CraftInventory && ((CraftInventory) obj).inventory.equals(this.inventory);
     }
