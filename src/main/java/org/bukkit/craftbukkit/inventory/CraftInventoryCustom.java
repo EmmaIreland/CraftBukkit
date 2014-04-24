@@ -62,14 +62,16 @@ public class CraftInventoryCustom extends CraftInventory {
         }
 
         public ItemStack splitStack(int i, int j) {
-            return splitHelper(i, j, true);
+            ItemStack stack = splitWithoutUpdate(i, j);
+            this.update();
+            return stack;
         }
 
         public ItemStack splitWithoutUpdate(int i) {
-            return splitHelper(i, 1, false);
+            return splitWithoutUpdate(i, 1);
         }
 
-        public ItemStack splitHelper(int i, int j, boolean update) {
+        public ItemStack splitWithoutUpdate(int i, int j) {
             ItemStack stack = this.getItem(i);
             ItemStack result;
             if (stack == null) return null;
@@ -80,7 +82,6 @@ public class CraftInventoryCustom extends CraftInventory {
                 result = CraftItemStack.copyNMSStack(stack, j);
                 stack.count -= j;
             }
-            if (update) this.update();
             return result;
         }
 
