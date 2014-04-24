@@ -62,9 +62,9 @@ public class CraftInventoryCustom extends CraftInventory {
         }
 
         public ItemStack splitStack(int i, int j) {
-            ItemStack stack = splitWithoutUpdate(i, j);
+            ItemStack result = splitWithoutUpdate(i, j);
             this.update();
-            return stack;
+            return result;
         }
 
         public ItemStack splitWithoutUpdate(int i) {
