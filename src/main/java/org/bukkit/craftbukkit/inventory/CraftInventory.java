@@ -455,7 +455,7 @@ public class CraftInventory implements Inventory {
     }
 
     public InventoryType getTypeHelper(CraftInventoryCustom.MinecraftInventory inventory) {
-        return inventory.getType();
+        return ((CraftInventoryCustom.MinecraftInventory) inventory).getType();
     }
 
     public InventoryType getTypeHelper(InventoryEnderChest inventory) {
@@ -498,10 +498,12 @@ public class CraftInventory implements Inventory {
         inventory.setMaxStackSize(size);
     }
 
+    @Override
     public int hashCode() {
         return inventory.hashCode();
     }
 
+    @Override
     public boolean equals(final Object obj) {
         return obj instanceof CraftInventory && ((CraftInventory) obj).inventory.equals(this.inventory);
     }
